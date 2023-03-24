@@ -6,9 +6,6 @@ kill_timeout = 5
 primary_region = "lax"
 processes = []
 
-[[build]]
-  image = "imgineapi/imagineapi-api:0.1"
-
 [env]
   CONSUMER_ROLE_ID = "28cd8ba9-5485-4f52-80e6-04c91c827b09"
   DB_CLIENT = "postgres"

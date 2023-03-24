@@ -6,9 +6,6 @@ kill_timeout = 5
 primary_region = "lax"
 processes = []
 
-[[build]]
-  image = "imgineapi/imagineapi-bot:0.1"
-
 [env]
   RABBITMQ_PORT = 5672
   SERVICE_NAME = "consumer"

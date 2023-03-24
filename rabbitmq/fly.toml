@@ -9,9 +9,6 @@ processes = []
 [env]
   RABBITMQ_MNESIA_DIR = "/var/lib/rabbitmq/mnesia/data"
 
-[[build]]
-  image = "imgineapi/imagineapi-rabbitmq:0.1"
-
 [experimental]
   allowed_public_ports = []
   auto_rollback = true

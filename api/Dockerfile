@@ -1,0 +1,1 @@
+FROM imgineapi/imagineapi-api:0.1

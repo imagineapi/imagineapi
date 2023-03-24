@@ -1,0 +1,1 @@
+FROM imgineapi/imagineapi-rabbitmq:0.1

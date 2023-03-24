@@ -8,9 +8,6 @@ processes = []
 
 [env]
 
-[[build]]
-  image = "imgineapi/imagineapi-postgres:0.1"
-
 [experimental]
   auto_rollback = true
 
