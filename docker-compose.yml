@@ -45,6 +45,7 @@ services:
     image: rabbitmq:3.8.0-management 
     environment:
       RABBITMQ_DEFAULT_VHOST: '/'
+      RABBITMQ_NODENAME: rabbit@localhost
     env_file:
       - ./.shared.env
     volumes:
