@@ -58,7 +58,7 @@ services:
     ports:
       - 15672:15672
   bot:
-    image: imagineapi/imagineapi-bot:0.5.3
+    image: imagineapi/imagineapi-bot:latest
     container_name: bot
     environment:
       SERVICE_NAME: consumer
@@ -78,7 +78,7 @@ services:
         condition: service_healthy
       api:
         condition: service_started
-    restart: no
+    restart: unless-stopped
   # auto-heal ensures that containers are restarted if they fail health checks (added for bot)
   autoheal:
     image: willfarrell/autoheal
