@@ -13,6 +13,8 @@ services:
       #- 5432:5432 # uncomment to connect to db from host
     volumes:
       - database:/var/lib/postgresql/data
+    networks:
+      - imagineapi_net
   api:
     image: imagineapi/imagineapi-api:latest
     container_name: api
@@ -41,8 +43,10 @@ services:
         condition: service_healthy
       database:
         condition: service_started
+    networks:
+      - imagineapi_net
   rabbitmq:
-    image: rabbitmq:3.8.0-management 
+    image: rabbitmq:3.8.0-management
     environment:
       RABBITMQ_DEFAULT_VHOST: '/'
       RABBITMQ_NODENAME: rabbit@localhost
@@ -57,6 +61,8 @@ services:
       retries: 5
     ports:
       - 15672:15672
+    networks:
+      - imagineapi_net
   bot:
     image: imagineapi/imagineapi-bot:latest
     container_name: bot
@@ -79,19 +85,25 @@ services:
       api:
         condition: service_started
     restart: unless-stopped
+    networks:
+      - imagineapi_net
   # auto-heal ensures that containers are restarted if they fail health checks (added for bot)
   autoheal:
     image: willfarrell/autoheal
     container_name: autoheal
     restart: always
+    networks:
+      - imagineapi_net
     environment:
       - AUTOHEAL_CONTAINER_LABEL=all
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-
 
 volumes:
   proc_info:
   api:
   rabbitmq:
   database:
+
+networks:
+  imagineapi_net:
