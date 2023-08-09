@@ -2,7 +2,6 @@ version: "3"
 services:
   database:
     image: imagineapi/imagineapi-postgres:latest
-    container_name: database
     restart: always
     env_file:
       - ./.shared.env
@@ -17,7 +16,6 @@ services:
       - imagineapi_net
   api:
     image: imagineapi/imagineapi-api:latest
-    container_name: api
     ports:
       - 8055:8055
     environment:
@@ -65,7 +63,6 @@ services:
       - imagineapi_net
   bot:
     image: imagineapi/imagineapi-bot:latest
-    container_name: bot
     environment:
       SERVICE_NAME: consumer
 
@@ -90,7 +87,6 @@ services:
   # auto-heal ensures that containers are restarted if they fail health checks (added for bot)
   autoheal:
     image: willfarrell/autoheal
-    container_name: autoheal
     restart: always
     networks:
       - imagineapi_net
