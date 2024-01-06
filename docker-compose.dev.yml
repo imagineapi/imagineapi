@@ -1,0 +1,99 @@
+version: "3"
+services:
+  database:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ./.shared.env
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: imagineapi
+    ports:
+      - 5432:5432 # uncomment to connect to db from host
+    volumes:
+      - database:/var/lib/postgresql/data
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - 8055:8055
+    environment:
+      DB_CLIENT: postgres
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_DATABASE: imagineapi
+      DB_USER: postgres
+
+      STANDARD_ROLE_ID: 09c04dcf-5a1b-4583-b900-b259fa32dffa
+      CONSUMER_ROLE_ID: 28cd8ba9-5485-4f52-80e6-04c91c827b09
+
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+
+      EXTENSIONS_PATH: /directus/custom-extensions
+    env_file:
+      - ./.shared.env
+    volumes:
+      - api:/directus/uploads
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      database:
+        condition: service_started
+  rabbitmq:
+    build:
+      context: ./rabbitmq
+      dockerfile: Dockerfile
+    environment:
+      RABBITMQ_DEFAULT_VHOST: '/'
+      RABBITMQ_NODENAME: rabbit@localhost
+    env_file:
+      - ./.shared.env
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq/mnesia
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "status"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    ports:
+      - 15672:15672
+  bot:
+    build: ./bot
+    environment:
+      SERVICE_NAME: consumer
+
+      API_URL: http://api:8055
+
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+
+    env_file:
+      - ./.shared.env
+    volumes:
+      - ./bot/logs:/usr/src/app/logs
+      - proc_info:/usr/src/app/proc
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      api:
+        condition: service_started
+    restart: unless-stopped
+  # auto-heal ensures that containers are restarted if they fail health checks (added for bot)
+  autoheal:
+    image: willfarrell/autoheal
+    restart: always
+    environment:
+      - AUTOHEAL_CONTAINER_LABEL=all
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+
+volumes:
+  proc_info:
+  api:
+  rabbitmq:
+  database:
