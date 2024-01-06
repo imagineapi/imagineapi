@@ -1,1 +1,0 @@
-FROM imgineapi/imagineapi-postgres:0.1

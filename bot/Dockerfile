@@ -1,1 +1,0 @@
-FROM imgineapi/imagineapi-bot:0.1
