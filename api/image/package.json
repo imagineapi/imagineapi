@@ -1,0 +1,42 @@
+{
+	"name": "directus-extension-image",
+	"description": "Please enter a description for your extension",
+	"icon": "extension",
+	"version": "1.0.0",
+	"keywords": [
+		"directus",
+		"directus-extension",
+		"directus-custom-hook"
+	],
+	"directus:extension": {
+		"type": "hook",
+		"path": "dist/index.js",
+		"source": "src/index.ts",
+		"host": "^9.22.4"
+	},
+	"scripts": {
+		"build": "directus-extension build",
+		"dev": "directus-extension build -w --no-minify",
+		"build:non-min": "directus-extension build --no-minify",
+		"link": "directus-extension link"
+	},
+	"devDependencies": {
+		"@directus/extensions-sdk": "9.22.4",
+		"@directus/shared": "^9.22.3",
+		"@types/amqplib": "^0.10.1",
+		"@types/node": "^18.14.0",
+		"@types/strict-uri-encode": "^2.0.0",
+		"prettier": "^2.8.4",
+		"typescript": "^4.9.5"
+	},
+	"dependencies": {
+		"@directus/errors": "^0.0.1",
+		"@directus/sdk": "^10.3.1",
+		"amqp-connection-manager": "^4.1.12",
+		"amqplib": "^0.10.3",
+		"nanoid": "^4.0.1",
+		"strict-uri-encode": "^2.0.0",
+		"superstruct": "^1.0.3",
+		"tiny-invariant": "^1.3.1"
+	}
+}

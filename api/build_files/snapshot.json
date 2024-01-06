@@ -1,0 +1,1548 @@
+{
+    "version": 1,
+    "directus": "9.23.1",
+    "vendor": "postgres",
+    "collections": [
+        {
+            "collection": "images",
+            "meta": {
+                "accountability": "all",
+                "archive_app_filter": true,
+                "archive_field": null,
+                "archive_value": null,
+                "collapse": "open",
+                "collection": "images",
+                "color": null,
+                "display_template": null,
+                "group": null,
+                "hidden": false,
+                "icon": "broken_image",
+                "item_duplication_fields": null,
+                "note": null,
+                "singleton": false,
+                "sort": null,
+                "sort_field": null,
+                "translations": null,
+                "unarchive_value": null
+            },
+            "schema": {
+                "name": "images"
+            }
+        },
+        {
+            "collection": "status",
+            "meta": {
+                "accountability": "all",
+                "archive_app_filter": true,
+                "archive_field": null,
+                "archive_value": null,
+                "collapse": "open",
+                "collection": "status",
+                "color": null,
+                "display_template": null,
+                "group": null,
+                "hidden": false,
+                "icon": "network_check",
+                "item_duplication_fields": null,
+                "note": null,
+                "singleton": true,
+                "sort": null,
+                "sort_field": null,
+                "translations": null,
+                "unarchive_value": null
+            },
+            "schema": {
+                "name": "status"
+            }
+        }
+    ],
+    "fields": [
+        {
+            "collection": "directus_files",
+            "field": "upscaled_image_id",
+            "type": "uuid",
+            "meta": {
+                "collection": "directus_files",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "upscaled_image_id",
+                "group": null,
+                "hidden": true,
+                "interface": "select-dropdown-m2o",
+                "note": null,
+                "options": null,
+                "readonly": false,
+                "required": false,
+                "sort": null,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "upscaled_image_id",
+                "table": "directus_files",
+                "data_type": "uuid",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": "images",
+                "foreign_key_column": "id"
+            }
+        },
+        {
+            "collection": "directus_users",
+            "field": "webhooks",
+            "type": "json",
+            "meta": {
+                "collection": "directus_users",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "webhooks",
+                "group": null,
+                "hidden": false,
+                "interface": "list",
+                "note": null,
+                "options": {
+                    "addLabel": "Add webhook",
+                    "fields": [
+                        {
+                            "field": "webhook",
+                            "name": "webhook",
+                            "type": "string",
+                            "meta": {
+                                "field": "webhook",
+                                "type": "string",
+                                "interface": "input",
+                                "required": true,
+                                "options": {
+                                    "trim": true
+                                }
+                            }
+                        }
+                    ]
+                },
+                "readonly": false,
+                "required": false,
+                "sort": null,
+                "special": [
+                    "cast-json"
+                ],
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "webhooks",
+                "table": "directus_users",
+                "data_type": "json",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "date_created",
+            "type": "timestamp",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": "datetime",
+                "display_options": {
+                    "relative": true
+                },
+                "field": "date_created",
+                "group": null,
+                "hidden": true,
+                "interface": "datetime",
+                "note": null,
+                "options": null,
+                "readonly": true,
+                "required": false,
+                "sort": 6,
+                "special": [
+                    "date-created"
+                ],
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "half"
+            },
+            "schema": {
+                "name": "date_created",
+                "table": "images",
+                "data_type": "timestamp with time zone",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "date_updated",
+            "type": "timestamp",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": "datetime",
+                "display_options": {
+                    "relative": true
+                },
+                "field": "date_updated",
+                "group": null,
+                "hidden": true,
+                "interface": "datetime",
+                "note": null,
+                "options": null,
+                "readonly": true,
+                "required": false,
+                "sort": 8,
+                "special": [
+                    "date-updated"
+                ],
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "half"
+            },
+            "schema": {
+                "name": "date_updated",
+                "table": "images",
+                "data_type": "timestamp with time zone",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "discord_account_id",
+            "type": "string",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "discord_account_id",
+                "group": null,
+                "hidden": true,
+                "interface": "input",
+                "note": "The Discord user account used to run the prompt",
+                "options": null,
+                "readonly": true,
+                "required": false,
+                "sort": 15,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "discord_account_id",
+                "table": "images",
+                "data_type": "character varying",
+                "default_value": null,
+                "max_length": 255,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "discord_channel_id",
+            "type": "string",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "discord_channel_id",
+                "group": null,
+                "hidden": true,
+                "interface": "input",
+                "note": null,
+                "options": {
+                    "placeholder": "ID of Discord channel where generations happened"
+                },
+                "readonly": true,
+                "required": false,
+                "sort": 12,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "discord_channel_id",
+                "table": "images",
+                "data_type": "character varying",
+                "default_value": null,
+                "max_length": 255,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "discord_image_url",
+            "type": "text",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "discord_image_url",
+                "group": null,
+                "hidden": true,
+                "interface": "input",
+                "note": null,
+                "options": null,
+                "readonly": false,
+                "required": false,
+                "sort": 16,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "discord_image_url",
+                "table": "images",
+                "data_type": "text",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "discord_message_id",
+            "type": "string",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "discord_message_id",
+                "group": null,
+                "hidden": true,
+                "interface": "input",
+                "note": null,
+                "options": {
+                    "placeholder": "ID of Discord message that generated the image"
+                },
+                "readonly": true,
+                "required": false,
+                "sort": 14,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "discord_message_id",
+                "table": "images",
+                "data_type": "character varying",
+                "default_value": null,
+                "max_length": 255,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "discord_server_id",
+            "type": "string",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "discord_server_id",
+                "group": null,
+                "hidden": true,
+                "interface": "input",
+                "note": null,
+                "options": {
+                    "placeholder": "ID of Discord server where image was generated (guildId)"
+                },
+                "readonly": true,
+                "required": false,
+                "sort": 13,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "discord_server_id",
+                "table": "images",
+                "data_type": "character varying",
+                "default_value": null,
+                "max_length": 255,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "error",
+            "type": "text",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "error",
+                "group": null,
+                "hidden": false,
+                "interface": "input-multiline",
+                "note": null,
+                "options": null,
+                "readonly": false,
+                "required": false,
+                "sort": 20,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "error",
+                "table": "images",
+                "data_type": "text",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "generation_type",
+            "type": "string",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "generation_type",
+                "group": null,
+                "hidden": true,
+                "interface": "select-dropdown",
+                "note": null,
+                "options": {
+                    "choices": [
+                        {
+                            "text": "Initial",
+                            "value": "initial"
+                        },
+                        {
+                            "text": "Upscaled",
+                            "value": "upscaled"
+                        },
+                        {
+                            "text": "Remixed",
+                            "value": "remixed"
+                        }
+                    ]
+                },
+                "readonly": false,
+                "required": true,
+                "sort": 11,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "generation_type",
+                "table": "images",
+                "data_type": "character varying",
+                "default_value": "initial",
+                "max_length": 255,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "id",
+            "type": "uuid",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "id",
+                "group": null,
+                "hidden": true,
+                "interface": "input",
+                "note": null,
+                "options": null,
+                "readonly": true,
+                "required": false,
+                "sort": 1,
+                "special": [
+                    "uuid"
+                ],
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "id",
+                "table": "images",
+                "data_type": "uuid",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": false,
+                "is_unique": true,
+                "is_primary_key": true,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "internal_id",
+            "type": "string",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "internal_id",
+                "group": null,
+                "hidden": true,
+                "interface": "input",
+                "note": null,
+                "options": null,
+                "readonly": false,
+                "required": false,
+                "sort": 2,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "internal_id",
+                "table": "images",
+                "data_type": "character varying",
+                "default_value": null,
+                "max_length": 256,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": false,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "progress",
+            "type": "integer",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "progress",
+                "group": null,
+                "hidden": true,
+                "interface": "input",
+                "note": "Percentage completed during generation. Null when not started or already done.",
+                "options": {
+                    "max": 100,
+                    "min": 0
+                },
+                "readonly": false,
+                "required": false,
+                "sort": 10,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "progress",
+                "table": "images",
+                "data_type": "integer",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": 32,
+                "numeric_scale": 0,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "prompt",
+            "type": "text",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "prompt",
+                "group": null,
+                "hidden": false,
+                "interface": "input",
+                "note": "More descriptive provides better results",
+                "options": {
+                    "iconLeft": "auto_fix_normal",
+                    "placeholder": "Describe what you want the AI to generate"
+                },
+                "readonly": false,
+                "required": true,
+                "sort": 3,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "prompt",
+                "table": "images",
+                "data_type": "text",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": false,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "results",
+            "type": "uuid",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "results",
+                "group": null,
+                "hidden": false,
+                "interface": "file-image",
+                "note": null,
+                "options": {
+                    "crop": false
+                },
+                "readonly": false,
+                "required": false,
+                "sort": 4,
+                "special": [
+                    "file"
+                ],
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "results",
+                "table": "images",
+                "data_type": "uuid",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": "directus_files",
+                "foreign_key_column": "id"
+            }
+        },
+        {
+            "collection": "images",
+            "field": "status",
+            "type": "string",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "status",
+                "group": null,
+                "hidden": true,
+                "interface": "select-dropdown",
+                "note": null,
+                "options": {
+                    "choices": [
+                        {
+                            "text": "Pending",
+                            "value": "pending"
+                        },
+                        {
+                            "text": "Queued",
+                            "value": "queued"
+                        },
+                        {
+                            "text": "In Progress",
+                            "value": "in-progress"
+                        },
+                        {
+                            "text": "Failed",
+                            "value": "failed"
+                        },
+                        {
+                            "text": "Completed",
+                            "value": "completed"
+                        }
+                    ]
+                },
+                "readonly": false,
+                "required": true,
+                "sort": 9,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "status",
+                "table": "images",
+                "data_type": "character varying",
+                "default_value": "pending",
+                "max_length": 255,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "upscaled",
+            "type": "alias",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "upscaled",
+                "group": null,
+                "hidden": false,
+                "interface": "four-image-thumbnails",
+                "note": null,
+                "options": null,
+                "readonly": false,
+                "required": false,
+                "sort": 18,
+                "special": [
+                    "o2m"
+                ],
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            }
+        },
+        {
+            "collection": "images",
+            "field": "upscaled_urls",
+            "type": "json",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "upscaled_urls",
+                "group": null,
+                "hidden": true,
+                "interface": null,
+                "note": null,
+                "options": null,
+                "readonly": false,
+                "required": false,
+                "sort": 19,
+                "special": [
+                    "cast-json"
+                ],
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "upscaled_urls",
+                "table": "images",
+                "data_type": "json",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "url",
+            "type": "string",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "url",
+                "group": null,
+                "hidden": true,
+                "interface": "input",
+                "note": "URL of your generated image",
+                "options": null,
+                "readonly": true,
+                "required": false,
+                "sort": 17,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "url",
+                "table": "images",
+                "data_type": "character varying",
+                "default_value": null,
+                "max_length": 255,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "images",
+            "field": "user_created",
+            "type": "uuid",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": "user",
+                "display_options": null,
+                "field": "user_created",
+                "group": null,
+                "hidden": true,
+                "interface": "select-dropdown-m2o",
+                "note": null,
+                "options": {
+                    "template": "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
+                },
+                "readonly": true,
+                "required": false,
+                "sort": 5,
+                "special": [
+                    "user-created"
+                ],
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "half"
+            },
+            "schema": {
+                "name": "user_created",
+                "table": "images",
+                "data_type": "uuid",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": "directus_users",
+                "foreign_key_column": "id"
+            }
+        },
+        {
+            "collection": "images",
+            "field": "user_updated",
+            "type": "uuid",
+            "meta": {
+                "collection": "images",
+                "conditions": null,
+                "display": "user",
+                "display_options": null,
+                "field": "user_updated",
+                "group": null,
+                "hidden": true,
+                "interface": "select-dropdown-m2o",
+                "note": null,
+                "options": {
+                    "template": "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
+                },
+                "readonly": true,
+                "required": false,
+                "sort": 7,
+                "special": [
+                    "user-updated"
+                ],
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "half"
+            },
+            "schema": {
+                "name": "user_updated",
+                "table": "images",
+                "data_type": "uuid",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": "directus_users",
+                "foreign_key_column": "id"
+            }
+        },
+        {
+            "collection": "status",
+            "field": "bot_status",
+            "type": "string",
+            "meta": {
+                "collection": "status",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "bot_status",
+                "group": null,
+                "hidden": false,
+                "interface": "select-dropdown",
+                "note": null,
+                "options": {
+                    "choices": [
+                        {
+                            "text": "starting",
+                            "value": "starting"
+                        },
+                        {
+                            "text": "healthy",
+                            "value": "healthy"
+                        },
+                        {
+                            "text": "unhealthy",
+                            "value": "unhealthy"
+                        },
+                        {
+                            "text": "paused",
+                            "value": "paused"
+                        }
+                    ]
+                },
+                "readonly": false,
+                "required": true,
+                "sort": null,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "bot_status",
+                "table": "status",
+                "data_type": "character varying",
+                "default_value": "not started",
+                "max_length": 255,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "status",
+            "field": "date_created",
+            "type": "timestamp",
+            "meta": {
+                "collection": "status",
+                "conditions": null,
+                "display": "datetime",
+                "display_options": {
+                    "relative": true
+                },
+                "field": "date_created",
+                "group": null,
+                "hidden": true,
+                "interface": "datetime",
+                "note": null,
+                "options": null,
+                "readonly": true,
+                "required": false,
+                "sort": null,
+                "special": [
+                    "date-created"
+                ],
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "half"
+            },
+            "schema": {
+                "name": "date_created",
+                "table": "status",
+                "data_type": "timestamp with time zone",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "status",
+            "field": "date_updated",
+            "type": "timestamp",
+            "meta": {
+                "collection": "status",
+                "conditions": null,
+                "display": "datetime",
+                "display_options": {
+                    "relative": true
+                },
+                "field": "date_updated",
+                "group": null,
+                "hidden": true,
+                "interface": "datetime",
+                "note": null,
+                "options": null,
+                "readonly": true,
+                "required": false,
+                "sort": null,
+                "special": [
+                    "date-updated"
+                ],
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "half"
+            },
+            "schema": {
+                "name": "date_updated",
+                "table": "status",
+                "data_type": "timestamp with time zone",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "status",
+            "field": "id",
+            "type": "integer",
+            "meta": {
+                "collection": "status",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "id",
+                "group": null,
+                "hidden": true,
+                "interface": "input",
+                "note": null,
+                "options": null,
+                "readonly": true,
+                "required": false,
+                "sort": null,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "id",
+                "table": "status",
+                "data_type": "integer",
+                "default_value": "nextval('status_id_seq'::regclass)",
+                "max_length": null,
+                "numeric_precision": 32,
+                "numeric_scale": 0,
+                "is_nullable": false,
+                "is_unique": true,
+                "is_primary_key": true,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": true,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "status",
+            "field": "message",
+            "type": "text",
+            "meta": {
+                "collection": "status",
+                "conditions": null,
+                "display": null,
+                "display_options": null,
+                "field": "message",
+                "group": null,
+                "hidden": false,
+                "interface": "input-multiline",
+                "note": null,
+                "options": {
+                    "iconLeft": "markunread_mailbox",
+                    "placeholder": "Error message appears when unhealthy or if the bot needs some intervention and has paused"
+                },
+                "readonly": false,
+                "required": false,
+                "sort": null,
+                "special": null,
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "full"
+            },
+            "schema": {
+                "name": "message",
+                "table": "status",
+                "data_type": "text",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": null,
+                "foreign_key_column": null
+            }
+        },
+        {
+            "collection": "status",
+            "field": "user_created",
+            "type": "uuid",
+            "meta": {
+                "collection": "status",
+                "conditions": null,
+                "display": "user",
+                "display_options": null,
+                "field": "user_created",
+                "group": null,
+                "hidden": true,
+                "interface": "select-dropdown-m2o",
+                "note": null,
+                "options": {
+                    "template": "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
+                },
+                "readonly": true,
+                "required": false,
+                "sort": null,
+                "special": [
+                    "user-created"
+                ],
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "half"
+            },
+            "schema": {
+                "name": "user_created",
+                "table": "status",
+                "data_type": "uuid",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": "directus_users",
+                "foreign_key_column": "id"
+            }
+        },
+        {
+            "collection": "status",
+            "field": "user_updated",
+            "type": "uuid",
+            "meta": {
+                "collection": "status",
+                "conditions": null,
+                "display": "user",
+                "display_options": null,
+                "field": "user_updated",
+                "group": null,
+                "hidden": true,
+                "interface": "select-dropdown-m2o",
+                "note": null,
+                "options": {
+                    "template": "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
+                },
+                "readonly": true,
+                "required": false,
+                "sort": null,
+                "special": [
+                    "user-updated"
+                ],
+                "translations": null,
+                "validation": null,
+                "validation_message": null,
+                "width": "half"
+            },
+            "schema": {
+                "name": "user_updated",
+                "table": "status",
+                "data_type": "uuid",
+                "default_value": null,
+                "max_length": null,
+                "numeric_precision": null,
+                "numeric_scale": null,
+                "is_nullable": true,
+                "is_unique": false,
+                "is_primary_key": false,
+                "is_generated": false,
+                "generation_expression": null,
+                "has_auto_increment": false,
+                "foreign_key_table": "directus_users",
+                "foreign_key_column": "id"
+            }
+        }
+    ],
+    "relations": [
+        {
+            "collection": "directus_files",
+            "field": "upscaled_image_id",
+            "related_collection": "images",
+            "meta": {
+                "junction_field": null,
+                "many_collection": "directus_files",
+                "many_field": "upscaled_image_id",
+                "one_allowed_collections": null,
+                "one_collection": "images",
+                "one_collection_field": null,
+                "one_deselect_action": "nullify",
+                "one_field": "upscaled",
+                "sort_field": null
+            },
+            "schema": {
+                "table": "directus_files",
+                "column": "upscaled_image_id",
+                "foreign_key_table": "images",
+                "foreign_key_column": "id",
+                "constraint_name": "directus_files_upscaled_image_id_foreign",
+                "on_update": "NO ACTION",
+                "on_delete": "SET NULL"
+            }
+        },
+        {
+            "collection": "images",
+            "field": "results",
+            "related_collection": "directus_files",
+            "meta": {
+                "junction_field": null,
+                "many_collection": "images",
+                "many_field": "results",
+                "one_allowed_collections": null,
+                "one_collection": "directus_files",
+                "one_collection_field": null,
+                "one_deselect_action": "nullify",
+                "one_field": null,
+                "sort_field": null
+            },
+            "schema": {
+                "table": "images",
+                "column": "results",
+                "foreign_key_table": "directus_files",
+                "foreign_key_column": "id",
+                "constraint_name": "images_results_foreign",
+                "on_update": "NO ACTION",
+                "on_delete": "SET NULL"
+            }
+        },
+        {
+            "collection": "images",
+            "field": "user_created",
+            "related_collection": "directus_users",
+            "meta": {
+                "junction_field": null,
+                "many_collection": "images",
+                "many_field": "user_created",
+                "one_allowed_collections": null,
+                "one_collection": "directus_users",
+                "one_collection_field": null,
+                "one_deselect_action": "nullify",
+                "one_field": null,
+                "sort_field": null
+            },
+            "schema": {
+                "table": "images",
+                "column": "user_created",
+                "foreign_key_table": "directus_users",
+                "foreign_key_column": "id",
+                "constraint_name": "images_user_created_foreign",
+                "on_update": "NO ACTION",
+                "on_delete": "NO ACTION"
+            }
+        },
+        {
+            "collection": "images",
+            "field": "user_updated",
+            "related_collection": "directus_users",
+            "meta": {
+                "junction_field": null,
+                "many_collection": "images",
+                "many_field": "user_updated",
+                "one_allowed_collections": null,
+                "one_collection": "directus_users",
+                "one_collection_field": null,
+                "one_deselect_action": "nullify",
+                "one_field": null,
+                "sort_field": null
+            },
+            "schema": {
+                "table": "images",
+                "column": "user_updated",
+                "foreign_key_table": "directus_users",
+                "foreign_key_column": "id",
+                "constraint_name": "images_user_updated_foreign",
+                "on_update": "NO ACTION",
+                "on_delete": "NO ACTION"
+            }
+        },
+        {
+            "collection": "status",
+            "field": "user_created",
+            "related_collection": "directus_users",
+            "meta": {
+                "junction_field": null,
+                "many_collection": "status",
+                "many_field": "user_created",
+                "one_allowed_collections": null,
+                "one_collection": "directus_users",
+                "one_collection_field": null,
+                "one_deselect_action": "nullify",
+                "one_field": null,
+                "sort_field": null
+            },
+            "schema": {
+                "table": "status",
+                "column": "user_created",
+                "foreign_key_table": "directus_users",
+                "foreign_key_column": "id",
+                "constraint_name": "status_user_created_foreign",
+                "on_update": "NO ACTION",
+                "on_delete": "NO ACTION"
+            }
+        },
+        {
+            "collection": "status",
+            "field": "user_updated",
+            "related_collection": "directus_users",
+            "meta": {
+                "junction_field": null,
+                "many_collection": "status",
+                "many_field": "user_updated",
+                "one_allowed_collections": null,
+                "one_collection": "directus_users",
+                "one_collection_field": null,
+                "one_deselect_action": "nullify",
+                "one_field": null,
+                "sort_field": null
+            },
+            "schema": {
+                "table": "status",
+                "column": "user_updated",
+                "foreign_key_table": "directus_users",
+                "foreign_key_column": "id",
+                "constraint_name": "status_user_updated_foreign",
+                "on_update": "NO ACTION",
+                "on_delete": "NO ACTION"
+            }
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+node_modules/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+.env
+dist/
+logs/
+*.typegen.ts
+partial-build/
+proc/
