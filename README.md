@@ -15,7 +15,17 @@ If you run into issues, [log them here](https://github.com/imagineapi/imagineapi
 
 ### Troubleshooting
 
-If you encounter issues, you can run `docker compose -f docker-compose.dev.yml logs api` or `docker compose -f docker-compose.dev.yml logs bot` to see logs for the `api` or `bot` services respectively. 
+If you encounter issues, you can run `docker compose -f docker-compose.dev.yml logs api` or `docker compose -f docker-compose.dev.yml logs bot` to see logs for the `api` or `bot` services respectively.
+
+### Architecture
+
+There are 3 services at work: API, RabbitMQ, Bot as follows:
+
+![](diagram-services.webp)
+
+In more detail, this is roughly how things work:
+
+![](diagram.png)
 
 ## License
 
