@@ -1,4 +1,9 @@
-import { BrowserContext, Page, Response } from "playwright-core";
+import {
+  BrowserContext,
+  Page,
+  Response,
+  ConsoleMessage,
+} from "playwright-core";
 import invariant from "tiny-invariant";
 import { nanoid } from "nanoid";
 import { logger } from "./utils/logger";
@@ -64,32 +69,6 @@ export async function verifyEmailAction(
   });
 }
 
-export async function clickCaptchaAndFindSiteKey(page: Page) {
-  const hCaptchaIframe = await page.waitForSelector("iframe[src*='hcaptcha']");
-  const hCaptchaIframeElement = await hCaptchaIframe.asElement();
-  hCaptchaIframeElement?.scrollIntoViewIfNeeded();
-  const src = await hCaptchaIframe.getAttribute("src");
-  // get sitekey from iframe src
-  const sitekey = src?.split("sitekey=")[1].split("&")[0];
-
-  if (!sitekey) {
-    throw new Error("Failed to find captcha sitekey");
-  }
-
-  // TODO: determine if this is needed
-  // click hcaptcha checkbox
-  await page
-    .frameLocator(
-      'iframe[title="Widget containing checkbox for hCaptcha security challenge"]'
-    )
-    .getByRole("checkbox", {
-      name: "hCaptcha checkbox. Select in order to trigger the challenge, or to bypass it if you have an accessibility cookie.",
-    })
-    .click();
-
-  return { sitekey };
-}
-
 export async function sendCaptchaChallengeAction(
   page: Page,
   sitekey: string
@@ -125,8 +104,8 @@ export async function sendCaptcha(
   try {
     const loginResults = await page.evaluate(discordInPageLogin, {
       solution,
-      discordUsername,
-      discordPassword,
+      username: discordUsername,
+      password: discordPassword,
     });
     logger.debug("Got login results", loginResults);
 
@@ -157,96 +136,116 @@ export async function loginIntoChannel(
   page: Page,
   loginUrl: string,
   username: string,
-  password: string
+  password: string,
+  xCaptchaKey?: string
 ): Promise<
-  | { next: "captcha" }
-  | { next: "authenticated"; userId?: string; token?: string }
+  | {
+      next:
+        | "two-factor"
+        | "not-authenticated"
+        | "invalidCredentials"
+        | "verifyEmail";
+    }
+  | { next: "captcha"; sitekey: string }
+  | { next: "authenticated"; userId: string; token: string }
   | void
 > {
-  await page.goto(loginUrl);
+  const logHandler = async (msg: ConsoleMessage) => {
+    const values = await Promise.all(msg.args().map((arg) => arg.jsonValue()));
+    console.log("In page log handler:", ...values);
+  };
+  page.on("console", logHandler);
 
-  // We have this factory because we need to be able to remove the response handler
-  // when we are done with it. If we don't, caching is disabled for the whole
-  // browser context and every page
-  function createUserIdPromise() {
-    let handler: (response: Response) => Promise<void> = async () => {};
-
-    const promise = new Promise<{ userId: string; token: string } | undefined>(
-      (resolve) => {
-        handler = async (response) => {
-          if (
-            response.url().includes("https://discord.com/api/v9/auth/login")
-          ) {
-            const jsonResponse = await response.json();
-            console.log(
-              "%cbrowser-actions.ts line:236 jsonResponse",
-              "color: #007acc;",
-              jsonResponse?.user_id
-            );
-            if (
-              ss.is(
-                jsonResponse,
-                ss.type({ user_id: ss.string(), token: ss.string() })
-              )
-            ) {
-              resolve({
-                userId: jsonResponse.user_id,
-                token: jsonResponse.token,
-              });
-            }
-          }
-        };
-
-        // Add the response handler
-        page.context().on("response", handler);
-      }
-    );
-
-    return { promise, handler };
+  if (!xCaptchaKey) {
+    logger.debug("Navigating to login page");
+    await page.goto(loginUrl);
   }
 
-  const { promise: userIdPromise, handler: responseHandler } =
-    createUserIdPromise();
+  await logger.screenshot(page, "after in login page", null, "login-page-xxx");
 
-  // if page has Welcome back, just log in
-  if (await page.isVisible("text=Welcome back!")) {
-  } else {
-    await page.getByRole("button", { name: "Continue in browser" }).click();
-  }
-  await page.getByLabel("Email or Phone Number*").fill(username);
-  await page.getByLabel("Password*").click();
-  await page.getByLabel("Password*").fill(password);
-  await page.getByRole("button", { name: "Log In" }).click();
+  // Updated function
 
-  // wait for 5 seconds for user id to be returned
-  const loginInfo = await Promise.race([
-    userIdPromise,
-    new Promise<undefined>((r) => setTimeout(r, 5000)),
-  ]);
-  const userId = loginInfo?.userId;
-  const token = loginInfo?.token;
-
-  // It's important to remove the response handler, otherwise caching is disabled
-  page.context().off("response", responseHandler);
-
-  const agent = await page.evaluate(getUserAgent);
-  logger.error(`Browser agent: ${agent}`);
-
-  // kind of a hacky way to see if we're logged in or already or in login page
   try {
-    const captchaIframe = await page.waitForSelector(
-      "iframe[src*='hcaptcha']",
-      { timeout: 1000 }
-    );
+    const loginResults = await page.evaluate(discordInPageLogin, {
+      username,
+      password,
+      xCaptchaKey,
+    });
 
-    if (captchaIframe) {
-      return { next: "captcha" };
+    logger.debug("Got login response", loginResults);
+
+    if (
+      ss.is(loginResults, ss.type({ mfa: ss.boolean() })) &&
+      loginResults.mfa === true
+    ) {
+      return { next: "two-factor" };
+    } else if (
+      ss.is(
+        loginResults,
+        ss.type({
+          captcha_key: ss.array(ss.literal("captcha-required")),
+          captcha_sitekey: ss.string(),
+        })
+      )
+    ) {
+      return {
+        next: "captcha",
+        sitekey: loginResults.captcha_sitekey,
+      };
+    } else if (
+      ss.is(loginResults, ss.type({ user_id: ss.string(), token: ss.string() }))
+    ) {
+      return {
+        next: "authenticated",
+        userId: loginResults.user_id,
+        token: loginResults.token,
+      };
+    } else if (
+      ss.is(
+        loginResults,
+        ss.type({
+          code: ss.literal(50035),
+          errors: ss.type({
+            login: ss.type({
+              _errors: ss.array(
+                ss.type({
+                  code: ss.literal("INVALID_LOGIN"),
+                })
+              ),
+            }),
+          }),
+        })
+      )
+    ) {
+      return { next: "invalidCredentials" };
+    } else if (
+      ss.is(
+        loginResults,
+        ss.type({
+          code: ss.literal(50035),
+          errors: ss.type({
+            login: ss.type({
+              _errors: ss.array(
+                ss.type({
+                  code: ss.literal("ACCOUNT_LOGIN_VERIFICATION_EMAIL"),
+                })
+              ),
+            }),
+          }),
+        })
+      )
+    ) {
+      return { next: "verifyEmail" };
+    } else {
+      return { next: "not-authenticated" };
     }
-  } catch (e) {
-    return { next: "authenticated", userId, token };
+    // Handle loginResults here
+  } catch (error) {
+    console.error("Error in discordInPageLogin:", error);
+  } finally {
+    // Move the handler removal to the end to ensure all logs are captured
+    page.off("console", logHandler);
   }
-
-  throw new Error("Failed to login into discord. Page url: " + page.url);
 }
 
 export async function sendPromptUsingWs(

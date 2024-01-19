@@ -3,7 +3,6 @@ import dotenvSafe from "dotenv-safe";
 
 import { chromium, Page, Frame } from "playwright-core";
 import {
-  clickCaptchaAndFindSiteKey,
   loginAfterEmailVerfificationAction,
   loginIntoChannel,
   sendCaptcha,
@@ -108,13 +107,12 @@ export type LoginMachineEvent =
     };
 
 type LoginMachineService = {
-  login: { data: { next: string } | void };
+  login: { data: { next: string } | { next: string; sitekey: string } | void };
+  attemptLoginWithCaptcha: { data: { next: string } | void };
   solveCaptcha: { data: { next: string } | void };
   verifyEmail: { data: { verified: boolean } };
   sendCaptchaChallenge: { data: { status: "waiting"; captchaId: string } };
   checkCaptchaChallenge: { data: { next: string } | void };
-  engageCaptchaUIAndFindSiteKey: { data: { sitekey: string } };
-  sendCaptchaSolution: { data: { status: string } };
   checkSolution: {
     data:
       | { status: "solved"; solution: string }
@@ -320,7 +318,11 @@ export const ConnectionPool: WsConnectionPool = {};
             onDone: [
               {
                 cond: "sawCaptcha",
-                target: "captchaLoaded",
+                target: "siteKeyFound",
+              },
+              {
+                target: "emailVerification",
+                cond: "sawEmailVerification",
               },
               {
                 target: "authenticated",
@@ -344,47 +346,81 @@ export const ConnectionPool: WsConnectionPool = {};
             ],
           },
         },
-        captchaLoaded: {
+        loginWithCaptcha: {
           invoke: {
-            src: "engageCaptchaUIAndFindSiteKey",
-            onDone: {
-              target: "siteKeyFound",
+            src: "attemptLoginWithCaptcha",
+            onDone: [
+              {
+                target: "emailVerification",
+                cond: "sawEmailVerification",
+              },
+            ],
+            onError: {
+              target: "loginScreen",
+              cond: "notManyLoginAttempts",
+              actions: [
+                assign({
+                  loginRetries: (context, event) => context.loginRetries + 1,
+                }),
+                (context, event) => {
+                  logger.error("Failed to login with captcha", { event });
+                },
+              ],
             },
-            onError: "loginScreen",
           },
         },
         siteKeyFound: {
           invoke: {
             src: "sendCaptchaChallenge",
             onDone: [{ target: "captchaSolving", actions: ["setCaptchaId"] }],
-            onError: "loginScreen",
+            onError: {
+              target: "loginScreen",
+              cond: "notManyLoginAttempts",
+              actions: [
+                assign({
+                  loginRetries: (context, event) => context.loginRetries + 1,
+                }),
+                (context, event) => {
+                  logger.error("Failed to send captcha challenge", { event });
+                },
+              ],
+            },
           },
         },
         captchaSolving: {
           invoke: {
             src: "checkSolution",
-            onError: { target: "captchaLoaded" },
+            onError: {
+              target: "loginScreen",
+              cond: "notManyLoginAttempts",
+              actions: [
+                assign({
+                  loginRetries: (context, event) => context.loginRetries + 1,
+                }),
+                (context, event) => {
+                  logger.error("Captcha solution check failed", { event });
+                },
+              ],
+            },
           },
           on: {
-            CAPTCHA_SOLVED: "sendCaptchaSolution",
+            CAPTCHA_SOLVED: "loginWithCaptcha",
           },
           after: {
             [CAPTCHA_TIMEOUT]: {
               target: "loginScreen",
+              cond: "notManyLoginAttempts",
+              actions: [
+                assign({
+                  loginRetries: (context, event) => context.loginRetries + 1,
+                }),
+                (context, event) => {
+                  logger.error("Failed to solve captcha", { event });
+                },
+              ],
             },
           },
         },
-        sendCaptchaSolution: {
-          invoke: {
-            src: "sendCaptchaSolution",
-            onDone: {
-              target: "emailVerification",
-              cond: "sawEmailVerification",
-            },
-            onError: "captchaLoaded",
-          },
-        },
-
         emailVerification: {
           entry: [
             () =>
@@ -539,7 +575,7 @@ export const ConnectionPool: WsConnectionPool = {};
           return event.data?.next === "captcha";
         },
         sawEmailVerification: (context, event) => {
-          return event.data?.status === "verifyEmail";
+          return event.data?.next === "verifyEmail";
         },
       },
       services: {
@@ -661,14 +697,35 @@ export const ConnectionPool: WsConnectionPool = {};
           });
         },
 
-        engageCaptchaUIAndFindSiteKey: async (context, event) => {
+        attemptLoginWithCaptcha: async (
+          context,
+          event
+        ): Promise<void | { next: string }> => {
           invariant(context.loginPage, "loginPage is null");
-          return await clickCaptchaAndFindSiteKey(context.loginPage);
+          invariant(process.env.DISCORD_EMAIL, "DISCORD_EMAIL not set");
+          invariant(process.env.DISCORD_PASSWORD, "DISCORD_PASSWORD not set");
+
+          const nextData = await loginIntoChannel(
+            context.loginPage,
+            DISCORD_LOGIN_URL,
+            process.env.DISCORD_EMAIL,
+            process.env.DISCORD_PASSWORD,
+            event.data.solution
+          );
+
+          return nextData;
         },
         login: async (context, event): Promise<void | { next: string }> => {
           invariant(process.env.DISCORD_EMAIL, "DISCORD_EMAIL not set");
           invariant(process.env.DISCORD_PASSWORD, "DISCORD_PASSWORD not set");
           invariant(context.loginPage, "loginPage is null");
+
+          await logger.screenshot(
+            context.loginPage,
+            "before login attempt",
+            null,
+            "before-login-attempt"
+          );
 
           const nextData = await loginIntoChannel(
             context.loginPage,
@@ -737,32 +794,24 @@ export const ConnectionPool: WsConnectionPool = {};
 
           return {};
         },
-        sendCaptchaSolution: async (context, event) => {
-          invariant(process.env.DISCORD_EMAIL, "DISCORD_EMAIL not set");
-          invariant(process.env.DISCORD_PASSWORD, "DISCORD_PASSWORD not set");
-          invariant(context.loginPage, "loginPage is null");
-
-          logger.debug("Sending captcha solution");
-
-          const nextInfo = await sendCaptcha(
-            context.loginPage,
-            event.data.solution,
-            process.env.DISCORD_EMAIL,
-            process.env.DISCORD_PASSWORD
-          );
-
-          logger.debug("Captcha sent", nextInfo);
-
-          return nextInfo;
-        },
         sendCaptchaChallenge: async (context, event) => {
           invariant(context.loginPage, "loginPage is null");
-          const sentInfo = await sendCaptchaChallengeAction(
-            context.loginPage,
-            event.data.sitekey
-          );
 
-          return sentInfo;
+          if (
+            ss.is(
+              event.data,
+              ss.object({ sitekey: ss.string(), next: ss.string() })
+            )
+          ) {
+            const sentInfo = await sendCaptchaChallengeAction(
+              context.loginPage,
+              event.data.sitekey
+            );
+
+            return sentInfo;
+          }
+
+          throw new Error("Expected sitekey in event data");
         },
       },
     }

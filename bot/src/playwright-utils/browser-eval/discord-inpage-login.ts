@@ -1,22 +1,33 @@
 export default function discordInPageLogin({
-  solution,
-  discordUsername,
-  discordPassword,
+  username,
+  password,
+  xCaptchaKey,
 }: {
-  solution: string;
-  discordUsername: string;
-  discordPassword: string;
+  username: string;
+  password: string;
+  xCaptchaKey?: string;
 }) {
-  return new Promise((resolve, reject) => {
-    fetch("https://discord.com/api/v9/auth/login", {
-      headers: {
-        "content-type": "application/json",
-      },
-      body: `{"login":"${discordUsername}","password":"${discordPassword}","undelete":false,"captcha_key":"${solution}","gift_code_sku_id":null}`,
-      method: "POST",
-    })
-      .then((response) => response.json())
-      .then((data) => resolve(data))
-      .catch((error) => reject(error));
-  });
+  console.log("In page login eval");
+  const headers: { "content-type": string; "x-captcha-key"?: string } = {
+    "content-type": "application/json",
+  };
+
+  if (xCaptchaKey) {
+    headers["x-captcha-key"] = xCaptchaKey;
+  }
+
+  return fetch("https://discord.com/api/v9/auth/login", {
+    headers,
+    body: JSON.stringify({
+      login: username,
+      password,
+      undelete: false,
+      login_source: null,
+      gift_code_sku_id: null,
+    }),
+    method: "POST",
+  })
+    .then((response) => response.json())
+    .then((data) => Promise.resolve(data))
+    .catch((error) => Promise.reject(error));
 }
