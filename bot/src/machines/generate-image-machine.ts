@@ -256,7 +256,7 @@ type GenerateMachineEvent =
 // | { type: "REJECT_JOB"; error: string };
 
 const POSTFIX_REGEX =
-  "(?:fast, stealth|fast , stealth |turbo, stealth|turbo , stealth |fast|fast |turbo|turbo )";
+  "(?:fast, stealth|fast , stealth |turbo, stealth|turbo , stealth |fast|fast |turbo|turbo |relaxed|relaxed )";
 // message from browser DOM seems to have extra space which is why we do that funky extra space thing after "fast", "stealth" and "turbo"
 
 const PROGRESS_REGEX = new RegExp(
