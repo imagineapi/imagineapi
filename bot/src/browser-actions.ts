@@ -297,7 +297,7 @@ export async function sendPromptUsingWs(
       channel_id: threadId,
       session_id: token,
       data: {
-        version: "11237876415471554623", // command version?
+        version: "1237876415471554623", // command version?
         id: "938956540159881230", // command id
         name: "imagine",
         type: 1,
