@@ -264,6 +264,8 @@ const PROGRESS_REGEX = new RegExp(
   "m"
 );
 
+// GH action: cause a build # todo remove this
+//
 const ENDS_WITH_REGEX = new RegExp(`\\(${POSTFIX_REGEX}\\)`);
 
 export const generateImageMachine =
