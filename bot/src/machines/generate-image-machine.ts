@@ -263,6 +263,9 @@ const PROGRESS_REGEX = new RegExp(
   `\\((\\d{1,3})%\\) \\(${POSTFIX_REGEX}\\)(?:\\n-# Create, explore.*?)?$|\\((Stopped|Stopped )\\)$`,
   "m"
 );
+
+// GH action: cause a build # todo remove this
+//
 const ENDS_WITH_REGEX = new RegExp(`\\(${POSTFIX_REGEX}\\)`);
 
 export const generateImageMachine =

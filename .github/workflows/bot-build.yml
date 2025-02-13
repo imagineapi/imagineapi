@@ -2,6 +2,8 @@ name: ci
 
 on:
   push:
+    paths:
+      - "bot/**"
     branches:
       - main
     tags:
