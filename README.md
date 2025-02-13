@@ -1,4 +1,4 @@
-### ImagineAPI.dev — Midjourney API 👋
+### ImagineAPI.dev — Midjourney (MJ) API 👋
 
 To get started with self-hosted version, [go here](https://docs.imagineapi.dev/self-host-install/requirements).
 
@@ -6,7 +6,7 @@ To get us to setup for you and handle the hard work, [try a Cloud Plan](https://
 
 ## Contributing
 
-1. Follow [these steps to setup a Discord bot with Midjourney](https://docs.imagineapi.dev/self-host-install/discord-bot)
+1. Follow [these steps to setup a Discord bot with Midjourney (MJ)](https://docs.imagineapi.dev/self-host-install/discord-bot)
 1. Create a `.shared.env` file using [these instructions](https://docs.imagineapi.dev/self-host-install/ImagineAPI#update-sharedenv).
 1. Run `docker compose -f docker-compose.dev.yml build` to build the contianers from source.
 1. Start the containers using `docker compose -f docker-compose.dev.yml up -d`
