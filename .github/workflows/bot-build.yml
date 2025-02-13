@@ -24,6 +24,12 @@ jobs:
             runs-on: [self-hosted, arm64]
     runs-on: ${{ matrix.runs-on }}
     steps:
+      - name: Cleanup /tmp/digests
+        if: always()
+        run: |
+          echo "Cleaning up /tmp/digests..."
+          rm -rf /tmp/digests
+          echo "Cleanup complete."
       - name: Checkout
         uses: actions/checkout@v4
       - name: Debug output
