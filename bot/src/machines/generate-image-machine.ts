@@ -260,7 +260,8 @@ const POSTFIX_REGEX =
 // message from browser DOM seems to have extra space which is why we do that funky extra space thing after "fast", "stealth" and "turbo"
 
 const PROGRESS_REGEX = new RegExp(
-  `\\((\\d{1,3})%\\) \\(${POSTFIX_REGEX}\\)$|\\((Stopped|Stopped )\\)$`
+  `\\((\\d{1,3})%\\) \\(${POSTFIX_REGEX}\\)(?:\\n-# Create, explore.*?)?$|\\((Stopped|Stopped )\\)$`,
+  "m"
 );
 const ENDS_WITH_REGEX = new RegExp(`\\(${POSTFIX_REGEX}\\)`);
 
